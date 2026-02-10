@@ -20,4 +20,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
             ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/private/src/*/*.cpp
     )
+else()
+    # Create a dummy install target for non-Windows platforms
+    message(STATUS "Arieo-Module-Win32Window: Skipping build for ${CMAKE_SYSTEM_NAME} (Windows only)")
+    install(CODE "message(STATUS \"Arieo-Module-Win32Window: No installation needed for ${CMAKE_SYSTEM_NAME}\")")
 endif()
