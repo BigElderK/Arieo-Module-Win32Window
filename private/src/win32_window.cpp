@@ -112,7 +112,7 @@ namespace Arieo
 
     void Win32WindowManager::destroyWindow(Base::Interface<Interface::Window::IWindow> window)
     {
-        Win32Window* win32_window = Base::castInterfaceToInstance<Win32Window>(window); 
+        Win32Window* win32_window = window.castTo<Win32Window>(); 
         ::DestroyWindow(win32_window->m_hwnd);
 
         m_win32_window_set.erase(win32_window);
