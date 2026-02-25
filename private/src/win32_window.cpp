@@ -52,7 +52,7 @@ namespace Arieo
     }
     
 
-    Interface::Window::IWindow* Win32WindowManager::createWindow(std::uint16_t pos_x, std::uint16_t pos_y, std::uint16_t width, std::uint16_t height)
+    Base::Interface<Interface::Window::IWindow> Win32WindowManager::createWindow(std::uint16_t pos_x, std::uint16_t pos_y, std::uint16_t width, std::uint16_t height)
     {
         WNDCLASSEXA win_class = { 0 };
         win_class.cbSize = sizeof(WNDCLASSEXA);
@@ -99,18 +99,18 @@ namespace Arieo
 
         ::ShowWindow(m_hwnd, SW_SHOW);
 
-        Win32Window* win32_window = Base::newT<Win32Window>(this, std::move(win_class.hInstance), std::move(m_hwnd));
+        Win32Window* win32_window = Base::newT<Win32Window>(this, std::move(m_hwnd));
         m_win32_window_set.insert(win32_window);
         return win32_window;
     }
 
-    Interface::Window::IWindow* Win32WindowManager::getMainWindow()
+    Base::Interface<Interface::Window::IWindow> Win32WindowManager::getMainWindow()
     {
         Core::Logger::error("Win32WindowManager::getMainWindow() not implemented, using createWindow instead");
         return nullptr;
     }
 
-    void Win32WindowManager::destroyWindow(Interface::Window::IWindow* window)
+    void Win32WindowManager::destroyWindow(Base::Interface<Interface::Window::IWindow> window)
     {
         Win32Window* win32_window = Base::castInterfaceToInstance<Win32Window>(window); 
         ::DestroyWindow(win32_window->m_hwnd);

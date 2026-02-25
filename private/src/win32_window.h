@@ -1,5 +1,6 @@
 #pragma once
 #include "interface/window/window.h"
+#include "base/interface/interface.h"
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers.
 #endif
@@ -14,8 +15,8 @@ namespace Arieo
         : public Interface::Window::IWindow
     {
     public:
-        Win32Window(Interface::Window::IWindowManager* window_manager, HMODULE&& module, HWND&& hwnd)
-            : m_window_manager(window_manager), m_module(std::move(module)), m_hwnd(std::move(hwnd))
+        Win32Window(Interface::Window::IWindowManager* window_manager, HWND&& hwnd)
+            : m_window_manager(window_manager), m_hwnd(std::move(hwnd))
         {
 
         }
@@ -57,7 +58,7 @@ namespace Arieo
             return ::IsWindow(m_hwnd) == false;
         }
 
-        Interface::Window::IWindowManager* getWindowManager() override
+        Base::Interface<Interface::Window::IWindowManager> getWindowManager() override
         {
             return m_window_manager;
         }
@@ -70,10 +71,8 @@ namespace Arieo
         friend class Win32WindowManager;
         static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-        HMODULE m_module;
+        Base::Interface<Interface::Window::IWindowManager> m_window_manager;
         HWND m_hwnd;
-
-        Interface::Window::IWindowManager* m_window_manager;
     };
 
     class Win32WindowManager final
@@ -87,10 +86,10 @@ namespace Arieo
 
         void* getDisplay() override;
 
-        Interface::Window::IWindow* createWindow(std::uint16_t pos_x, std::uint16_t pos_y, std::uint16_t width, std::uint16_t height) override;
-        void destroyWindow(Interface::Window::IWindow*) override;
+        Base::Interface<Interface::Window::IWindow> createWindow(std::uint16_t pos_x, std::uint16_t pos_y, std::uint16_t width, std::uint16_t height) override;
+        void destroyWindow(Base::Interface<Interface::Window::IWindow>) override;
 
-        Interface::Window::IWindow* getMainWindow() override;
+        Base::Interface<Interface::Window::IWindow> getMainWindow() override;
     public:
         void onInitialize() override;
         void onTick() override;
