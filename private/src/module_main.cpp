@@ -14,7 +14,6 @@ namespace Arieo
             
             DllLoader()
             { 
-                win32_window_manager->setSelf(win32_window_manager.queryInterface<Interface::Window::IWindowManager>());
                 win32_window_manager->initialize();
                 
                 Base::Interface<Interface::Main::IMainModule> main_module = Core::ModuleManager::getInterface<Interface::Main::IMainModule>();

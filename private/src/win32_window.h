@@ -15,8 +15,8 @@ namespace Arieo
         : public Interface::Window::IWindow
     {
     public:
-        Win32Window(Base::Interface<Interface::Window::IWindowManager> window_manager, HWND&& hwnd)
-            : m_window_manager(window_manager), m_hwnd(std::move(hwnd))
+        Win32Window(HWND&& hwnd)
+            : m_hwnd(std::move(hwnd))
         {
 
         }
@@ -58,11 +58,6 @@ namespace Arieo
             return ::IsWindow(m_hwnd) == false;
         }
 
-        Base::Interface<Interface::Window::IWindowManager> getWindowManager() override
-        {
-            return m_window_manager;
-        }
-
         Base::StringID getWindowPlatform() override
         {
             return Base::MakeStringID("win32");
@@ -71,7 +66,6 @@ namespace Arieo
         friend class Win32WindowManager;
         static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-        Base::Interface<Interface::Window::IWindowManager> m_window_manager;
         HWND m_hwnd;
     };
 
@@ -94,10 +88,5 @@ namespace Arieo
         void onInitialize() override;
         void onTick() override;
         void onDeinitialize() override;
-
-    public:
-        void setSelf(Base::Interface<Interface::Window::IWindowManager> self) { m_self = self; }
-    private:
-        Base::Interface<Interface::Window::IWindowManager> m_self;
     };
 }

@@ -99,7 +99,7 @@ namespace Arieo
 
         ::ShowWindow(m_hwnd, SW_SHOW);
 
-        Base::Interface<Interface::Window::IWindow> win32_window = Base::Interface<Interface::Window::IWindow>::createAs<Win32Window>(m_self, std::move(m_hwnd));
+        Base::Interface<Interface::Window::IWindow> win32_window = Base::Interface<Interface::Window::IWindow>::createAs<Win32Window>(std::move(m_hwnd));
         m_win32_window_set.insert(win32_window);
 
 
