@@ -15,7 +15,7 @@ namespace Arieo
         : public Interface::Window::IWindow
     {
     public:
-        Win32Window(Interface::Window::IWindowManager* window_manager, HWND&& hwnd)
+        Win32Window(Base::Interface<Interface::Window::IWindowManager> window_manager, HWND&& hwnd)
             : m_window_manager(window_manager), m_hwnd(std::move(hwnd))
         {
 
@@ -79,7 +79,7 @@ namespace Arieo
         : public Interface::Window::IWindowManager
     {
     protected:
-        std::unordered_set<Win32Window*> m_win32_window_set;
+        std::unordered_set<Base::Interface<Interface::Window::IWindow>> m_win32_window_set;
     public:
         void initialize();
         void finalize();
@@ -94,5 +94,10 @@ namespace Arieo
         void onInitialize() override;
         void onTick() override;
         void onDeinitialize() override;
+
+    public:
+        void setSelf(Base::Interface<Interface::Window::IWindowManager> self) { m_self = self; }
+    private:
+        Base::Interface<Interface::Window::IWindowManager> m_self;
     };
 }

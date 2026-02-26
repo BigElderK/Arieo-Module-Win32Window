@@ -37,7 +37,7 @@ namespace Arieo
 
     void Win32WindowManager::finalize()
     {
-        for(Win32Window* window : std::unordered_set(m_win32_window_set))
+        for(Base::Interface<Interface::Window::IWindow> window : std::unordered_set(m_win32_window_set))
         {
             destroyWindow(window);
         }
@@ -99,8 +99,10 @@ namespace Arieo
 
         ::ShowWindow(m_hwnd, SW_SHOW);
 
-        Win32Window* win32_window = Base::newT<Win32Window>(this, std::move(m_hwnd));
+        Base::Interface<Interface::Window::IWindow> win32_window = Base::Interface<Interface::Window::IWindow>::createAs<Win32Window>(m_self, std::move(m_hwnd));
         m_win32_window_set.insert(win32_window);
+
+
         return win32_window;
     }
 
@@ -115,8 +117,8 @@ namespace Arieo
         Win32Window* win32_window = window.castTo<Win32Window>(); 
         ::DestroyWindow(win32_window->m_hwnd);
 
-        m_win32_window_set.erase(win32_window);
-        Base::deleteT(win32_window);
+        m_win32_window_set.erase(window);
+        window.destroyAs<Win32Window>();
     }
 
     void Win32WindowManager::onInitialize()
