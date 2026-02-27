@@ -73,17 +73,17 @@ namespace Arieo
         : public Interface::Window::IWindowManager
     {
     protected:
-        std::unordered_set<Base::Interface<Interface::Window::IWindow>> m_win32_window_set;
+        std::unordered_set<Base::Interop<Interface::Window::IWindow>> m_win32_window_set;
     public:
         void initialize();
         void finalize();
 
         void* getDisplay() override;
 
-        Base::Interface<Interface::Window::IWindow> createWindow(std::uint16_t pos_x, std::uint16_t pos_y, std::uint16_t width, std::uint16_t height) override;
-        void destroyWindow(Base::Interface<Interface::Window::IWindow>) override;
+        Base::Interop<Interface::Window::IWindow> createWindow(std::uint16_t pos_x, std::uint16_t pos_y, std::uint16_t width, std::uint16_t height) override;
+        void destroyWindow(Base::Interop<Interface::Window::IWindow>) override;
 
-        Base::Interface<Interface::Window::IWindow> getMainWindow() override;
+        Base::Interop<Interface::Window::IWindow> getMainWindow() override;
     public:
         void onInitialize() override;
         void onTick() override;

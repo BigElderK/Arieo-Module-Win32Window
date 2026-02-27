@@ -16,7 +16,7 @@ namespace Arieo
             { 
                 win32_window_manager->initialize();
                 
-                Base::Interface<Interface::Main::IMainModule> main_module = Core::ModuleManager::getInterface<Interface::Main::IMainModule>();
+                Base::Interop<Interface::Main::IMainModule> main_module = Core::ModuleManager::getInterface<Interface::Main::IMainModule>();
                 main_module->registerTickable(win32_window_manager.queryInterface<Interface::Main::ITickable>());
 
                 Core::ModuleManager::registerInstance<Interface::Window::IWindowManager, Win32WindowManager>(
