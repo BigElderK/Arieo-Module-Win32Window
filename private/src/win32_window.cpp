@@ -37,7 +37,7 @@ namespace Arieo
 
     void Win32WindowManager::finalize()
     {
-        for(Base::Interop<Interface::Window::IWindow> window : std::unordered_set(m_win32_window_set))
+        for(Base::InteropOld<Interface::Window::IWindow> window : std::unordered_set(m_win32_window_set))
         {
             destroyWindow(window);
         }
@@ -52,7 +52,7 @@ namespace Arieo
     }
     
 
-    Base::Interop<Interface::Window::IWindow> Win32WindowManager::createWindow(std::uint16_t pos_x, std::uint16_t pos_y, std::uint16_t width, std::uint16_t height)
+    Base::InteropOld<Interface::Window::IWindow> Win32WindowManager::createWindow(std::uint16_t pos_x, std::uint16_t pos_y, std::uint16_t width, std::uint16_t height)
     {
         WNDCLASSEXA win_class = { 0 };
         win_class.cbSize = sizeof(WNDCLASSEXA);
@@ -99,26 +99,26 @@ namespace Arieo
 
         ::ShowWindow(m_hwnd, SW_SHOW);
 
-        Base::Interop<Interface::Window::IWindow> win32_window = Base::Interop<Interface::Window::IWindow>::createAs<Win32Window>(std::move(m_hwnd));
+        Base::InteropOld<Interface::Window::IWindow> win32_window = Base::InteropOld<Interface::Window::IWindow>::createAs<Win32Window>(std::move(m_hwnd));
         m_win32_window_set.insert(win32_window);
 
 
         return win32_window;
     }
 
-    Base::Interop<Interface::Window::IWindow> Win32WindowManager::getMainWindow()
+    Base::InteropOld<Interface::Window::IWindow> Win32WindowManager::getMainWindow()
     {
         Core::Logger::error("Win32WindowManager::getMainWindow() not implemented, using createWindow instead");
         return nullptr;
     }
 
-    void Win32WindowManager::destroyWindow(Base::Interop<Interface::Window::IWindow> window)
+    void Win32WindowManager::destroyWindow(Base::InteropOld<Interface::Window::IWindow> window)
     {
         Win32Window* win32_window = window.castTo<Win32Window>(); 
         ::DestroyWindow(win32_window->m_hwnd);
 
         m_win32_window_set.erase(window);
-        Base::Interop<Interface::Window::IWindow>::destroyAs<Win32Window>(std::move(window));
+        Base::InteropOld<Interface::Window::IWindow>::destroyAs<Win32Window>(std::move(window));
     }
 
     void Win32WindowManager::onInitialize()
