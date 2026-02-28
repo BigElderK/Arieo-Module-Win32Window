@@ -118,7 +118,7 @@ namespace Arieo
         ::DestroyWindow(win32_window->m_hwnd);
 
         m_win32_window_set.erase(window);
-        window.destroyAs<Win32Window>();
+        Base::Interop<Interface::Window::IWindow>::destroyAs<Win32Window>(std::move(window));
     }
 
     void Win32WindowManager::onInitialize()
