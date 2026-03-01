@@ -10,27 +10,28 @@ namespace Arieo
 
         static struct DllLoader
         {
-            Base::Instance<Win32WindowManager> win32_window_manager;
-            
-            DllLoader()
-            { 
-                win32_window_manager->initialize();
-                
-                Base::Interop::RawRef<Interface::Main::IMainModule> main_module = Core::ModuleManager::getInterface<Interface::Main::IMainModule>();
-                main_module->registerTickable(win32_window_manager.queryInterface<Interface::Main::ITickable>());
+            Win32WindowManager win32_window_manager_instance;
+            Base::Interop::SharedRef<Interface::Window::IWindowManager> window_manager = Base::Interop::makePersistentShared<Interface::Window::IWindowManager>(win32_window_manager_instance);
 
-                Core::ModuleManager::registerInstance<Interface::Window::IWindowManager, Win32WindowManager>(
-                    "window_manager", 
-                    win32_window_manager
+            DllLoader()
+            {
+                win32_window_manager_instance.initialize();
+
+                Base::Interop::SharedRef<Interface::Main::IMainModule> main_module = Core::ModuleManager::getInterface<Interface::Main::IMainModule>();
+                main_module->registerTickable(window_manager);
+
+                Core::ModuleManager::registerInterface<Interface::Window::IWindowManager>(
+                    "window_manager",
+                    window_manager
                 );
             }
 
             ~DllLoader()
             {
-                Core::ModuleManager::unregisterInstance<Interface::Window::IWindowManager, Win32WindowManager>(
-                    win32_window_manager
+                Core::ModuleManager::unregisterInterface<Interface::Window::IWindowManager>(
+                    window_manager
                 );
-                win32_window_manager->finalize();
+                win32_window_manager_instance.finalize();
             }
         } dll_loader;
     }
